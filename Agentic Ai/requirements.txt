@@ -1,0 +1,8 @@
+streamlit
+paramiko
+langchain
+langchain-google-genai
+bs4
+requests
+faiss-cpu
+sentence-transformers

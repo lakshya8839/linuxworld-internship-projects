@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Activity Tracker with IP</title>
+</head>
+<body>
+
+<h2>User Activity Tracker</h2>
+
+<p id="ip-display">Fetching IP...</p>
+
+<div id="image-container"></div>
+
+<button onclick="downloadActivityLog()">Download Activity Log</button>
+
+<p id="most-hovered"></p>
+
+<div id="activity-log">
+  <table id="log-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Event Type</th>
+        <th>Image</th>
+        <th>Details</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="log-body"></tbody>
+  </table>
+</div>
+
+<script>
+  const activityLog = [];
+  const hoverTimes = {};
+  const STAY_THRESHOLD_MS = 1000;
+  const images = [
+    '3.jpg',
+    '2.png',
+    '1.jpg'
+  ];
+  let userIP = 'unknown';
+
+  const container = document.getElementById('image-container');
+  const logBody = document.getElementById('log-body');
+
+  // Fetch user's IP address using public API
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      userIP = data.ip;
+      document.getElementById('ip-display').innerText = `Your IP: ${userIP}`;
+
+      // Optional: log this as first activity
+      logActivity({
+        type: 'ip_detected',
+        imageId: null,
+        details: `IP Address: ${userIP}`,
+        time: new Date().toLocaleTimeString()
+      });
+    })
+    .catch(err => {
+      console.warn("Could not fetch IP address", err);
+    });
+
+  function logActivity(data) {
+    activityLog.push({ ...data, ip: userIP });
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${activityLog.length}</td>
+      <td>${data.type}</td>
+      <td>${data.imageId || '-'}</td>
+      <td>${data.details}</td>
+      <td>${data.time}</td>
+    `;
+    logBody.appendChild(row);
+  }
+
+  function updateMostHovered() {
+    const mostHovered = Object.entries(hoverTimes).sort((a, b) => b[1] - a[1])[0];
+    if (mostHovered) {
+      const imgId = mostHovered[0];
+      const durationSec = (mostHovered[1] / 1000).toFixed(2);
+      document.getElementById('most-hovered').innerText =
+        `Most hovered image: ${imgId} for ${durationSec} seconds`;
+    }
+  }
+
+  images.forEach((src, index) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.dataset.id = `img${index}`;
+
+    let hoverStart = null;
+
+    img.addEventListener('click', (e) => {
+      logActivity({
+        type: 'click',
+        imageId: img.dataset.id,
+        details: `x=${e.clientX}, y=${e.clientY}`,
+        time: new Date().toLocaleTimeString()
+      });
+    });
+
+    img.addEventListener('dblclick', (e) => {
+      logActivity({
+        type: 'double_click',
+        imageId: img.dataset.id,
+        details: `x=${e.clientX}, y=${e.clientY}`,
+        time: new Date().toLocaleTimeString()
+      });
+    });
+
+    img.addEventListener('mouseenter', () => {
+      hoverStart = Date.now();
+      logActivity({
+        type: 'mouseenter',
+        imageId: img.dataset.id,
+        details: 'Mouse entered image',
+        time: new Date().toLocaleTimeString()
+      });
+    });
+
+    img.addEventListener('mouseleave', () => {
+      const duration = Date.now() - hoverStart;
+      logActivity({
+        type: 'mouseleave',
+        imageId: img.dataset.id,
+        details: 'Mouse left image',
+        time: new Date().toLocaleTimeString()
+      });
+
+      if (duration > STAY_THRESHOLD_MS) {
+        logActivity({
+          type: 'hover_hold',
+          imageId: img.dataset.id,
+          details: `${(duration / 1000).toFixed(2)} sec`,
+          time: new Date().toLocaleTimeString()
+        });
+
+        if (!hoverTimes[img.dataset.id] || hoverTimes[img.dataset.id] < duration) {
+          hoverTimes[img.dataset.id] = duration;
+          updateMostHovered();
+        }
+      }
+
+      hoverStart = null;
+    });
+
+    container.appendChild(img);
+  });
+
+  function downloadActivityLog() {
+    const blob = new Blob([JSON.stringify(activityLog, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'activity_log.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>

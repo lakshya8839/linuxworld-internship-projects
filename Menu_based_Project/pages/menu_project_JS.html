@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All-in-One JavaScript Tool</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("n7xso1J9Viazz_HGh"); // 🔁 Replace with your EmailJS User ID
+  </script>
+</head>
+<body>
+  <h1>📦 All-in-One JavaScript Tools</h1>
+  <p>Status: <span id="status">Ready</span></p>
+
+  <!-- 1️⃣ Camera Tools -->
+  <h2>1️⃣ Camera</h2>
+  <button onclick="startCamera()">🎥 Start Camera</button>
+  <button onclick="stopCamera()">🛑 Stop Camera</button><br><br>
+  <video id="video" width="320" height="240" autoplay playsinline style="display:none;"></video><br>
+  <button onclick="takePhoto()">📸 Take Photo</button><br><br>
+
+  <!-- 2️⃣ Video Recording -->
+  <h2>2️⃣ Video Recording</h2>
+  <button onclick="startRecording()">🎬 Start Recording</button>
+  <button onclick="stopRecording()">🧷 Stop & Save</button><br><br>
+
+  <!-- 3️⃣ Send Email (EmailJS) -->
+  <h2>3️⃣ Email (EmailJS)</h2>
+  <input type="text" id="from_name" placeholder="Your Name"><br>
+  <input type="email" id="from_email" placeholder="Your Email"><br>
+  <input type="text" id="subject" placeholder="Subject"><br>
+  <textarea id="message" placeholder="Your Message"></textarea><br>
+  <button onclick="sendEmail()">📧 Send Email</button><br><br>
+
+  <!-- 4️⃣ Messaging -->
+  <h2>4️⃣ Messaging</h2>
+  <input type="text" id="waPhone" placeholder="WhatsApp Number (with country code)">
+  <input type="text" id="waMsg" placeholder="WhatsApp Message">
+  <button onclick="sendWhatsApp(waPhone.value, waMsg.value)">💬 Send WhatsApp</button><br><br>
+  <input type="text" id="smsPhone" placeholder="SMS Phone">
+  <input type="text" id="smsMsg" placeholder="SMS Message">
+  <button onclick="sendSMS(smsPhone.value, smsMsg.value)">📱 Send SMS</button><br><br>
+
+  <!-- 5️⃣ Location -->
+  <h2>5️⃣ GPS & Maps</h2>
+  <button onclick="getLocation()">📍 Get Current Location</button><br><br>
+  <button onclick="showMap()">🗺️ Open in Google Maps</button><br><br>
+  <input type="text" id="dest" placeholder="Destination (e.g. Home)">
+  <button onclick="showRoute(dest.value)">🚗 Show Route</button><br><br>
+  <button onclick="searchNearbyGrocery()">🛒 Find Grocery Stores Nearby</button><br><br>
+
+  <!-- 6️⃣ Gmail & Social -->
+  <h2>6️⃣ Gmail & Social (Placeholder)</h2>
+  <button onclick="readGmail()">📨 Read Gmail</button><br><br>
+  <select id="socialPlatform">
+    <option value="Instagram">Instagram</option>
+    <option value="Twitter">Twitter</option>
+    <option value="LinkedIn">LinkedIn</option>
+  </select>
+  <input type="text" id="socialMessage" placeholder="Post Message">
+  <button onclick="postToSocial(socialPlatform.value, socialMessage.value)">📢 Post</button><br><br>
+
+<script>
+let video = document.getElementById("video");
+let statusText = document.getElementById("status");
+let stream = null;
+let mediaRecorder;
+let chunks = [];
+
+// Camera
+function startCamera() {
+  if (stream) return alert("Camera already running.");
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then(s => {
+      stream = s;
+      video.srcObject = stream;
+      video.style.display = "block";
+      statusText.textContent = "✅ Camera ON";
+    })
+    .catch(() => alert("❌ Camera access denied."));
+}
+
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    video.srcObject = null;
+    video.style.display = "none";
+    stream = null;
+    statusText.textContent = "🛑 Camera OFF";
+  }
+}
+
+function takePhoto() {
+  if (!stream) return alert("Start the camera first.");
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext("2d").drawImage(video, 0, 0);
+  const link = document.createElement("a");
+  link.download = "photo.png";
+  link.href = canvas.toDataURL();
+  link.click();
+  stopCamera();
+}
+
+// Video
+function startRecording() {
+  if (!stream) return alert("Start camera first.");
+  chunks = [];
+  mediaRecorder = new MediaRecorder(stream);
+  mediaRecorder.ondataavailable = e => chunks.push(e.data);
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(chunks, { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "video.webm";
+    a.click();
+    stopCamera();
+  };
+  mediaRecorder.start();
+  statusText.textContent = "🔴 Recording...";
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+    statusText.textContent = "⏹️ Stopped recording.";
+  }
+}
+
+// EmailJS
+function sendEmail() {
+  const params = {
+    from_name: document.getElementById("from_name").value,
+    from_email: document.getElementById("from_email").value,
+    subject: document.getElementById("subject").value,
+    message: document.getElementById("message").value
+  };
+
+  emailjs.send("service_7qrvwwz", "template_c56uq5k", params) // 🔁 Replace with yours
+    .then(() => alert("✅ Email sent!"))
+    .catch(err => {
+      console.error(err);
+      alert("❌ Failed to send email.");
+    });
+}
+
+// Messaging
+function sendWhatsApp(phone, message) {
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`);
+}
+
+function sendSMS(phone, message) {
+  window.open(`sms:${phone}?body=${encodeURIComponent(message)}`);
+}
+
+// Location
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    alert(`Latitude: ${pos.coords.latitude}\nLongitude: ${pos.coords.longitude}`);
+  }, () => alert("❌ GPS access denied."));
+}
+
+function showMap() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    window.open(`https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`);
+  });
+}
+
+function showRoute(dest) {
+  navigator.geolocation.getCurrentPosition(pos => {
+    window.open(`https://www.google.com/maps/dir/${pos.coords.latitude},${pos.coords.longitude}/${dest}`);
+  });
+}
+
+function searchNearbyGrocery() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    window.open(`https://www.google.com/maps/search/grocery/@${pos.coords.latitude},${pos.coords.longitude},15z`);
+  });
+}
+
+// Gmail & Social (Placeholder)
+function readGmail() {
+  alert("Reading Gmail requires Google API & backend.");
+}
+
+function postToSocial(platform, message) {
+  alert(`Posting to ${platform} requires API & backend.`);
+}
+</script>
+</body>
+</html>

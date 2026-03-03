@@ -1,0 +1,20 @@
+# Environment files
+.env
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

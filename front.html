@@ -1,0 +1,15 @@
+<script>
+
+
+function loadDoc(){
+   const xhttp = new XMLHttpRequest();
+   xhttp.onload = function() {
+      document.getElementById("d1").innerHTML = this.responseText;
+   }
+   xhttp.open("GET" , "db.txt" , true);
+}
+</script>
+<button onclick="loadDoc()">click me to see db</button>
+
+<div id="d1"></div>
+

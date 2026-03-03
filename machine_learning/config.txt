@@ -1,0 +1,3 @@
+db_url=newhost:5432
+username=admin
+password=newpass123

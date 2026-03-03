@@ -1,0 +1,42 @@
+<head>
+  <title>Camera Capture</title>
+</head>
+<body>
+  <h2>📸 Camera Capture</h2>
+
+  <video id="video" width="320" height="240" autoplay></video><br>
+  <button onclick="takePhoto()">📷 Take Photo</button>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas><br>
+  <a id="downloadLink" style="display:none;">Download Image</a>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const downloadLink = document.getElementById('downloadLink');
+
+    // Request access to the user's camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        alert("Camera access denied: " + err);
+      });
+
+    function takePhoto() {
+      // Draw the current video frame to the canvas
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert the canvas image to a data URL
+      const imageDataURL = canvas.toDataURL('image/png');
+
+      // Create a download link
+      downloadLink.href = imageDataURL;
+      downloadLink.download = 'captured_image.png';
+      downloadLink.textContent = '📥 Download Photo';
+      downloadLink.style.display = 'inline';
+    }
+  </script>
+</body>
+

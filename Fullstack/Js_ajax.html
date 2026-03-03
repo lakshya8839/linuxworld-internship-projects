@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Data Load</title>
+  <script>
+    function lw() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://192.168.129.225/db.txt?t=" + new Date().getTime(), true);
+      xhr.onload = function() {
+        document.getElementById("d1").innerHTML = this.responseText;
+      };
+      xhr.onerror = function() {
+        document.getElementById("d1").innerHTML = "Error loading file.";
+      };
+      xhr.send();
+    }
+    setInterval(lw, 5000)
+  </script>
+</head>
+<body>
+  <button onclick="lw()">Click me</button>
+  <div id="d1">i am div 1</div>
+</body>
+</html>
