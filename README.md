@@ -41,31 +41,64 @@ This internship focused on building real-world automation systems and solving pr
 ---
 
 # 📂 Repository Structure
-in linuxworld-internship-projects/
+linuxworld-internship-projects/
 │
-├── AI_AGENT_Streamlit_Project/
-├── Agentic Ai/
-├── Cloud Computing/
-├── Computer vision project/
-├── Devops_Projects/
-├── FInal Project Work/
-├── Fullstack/
-├── GenAI/
-├── Infra_as_code_proj_terraform/
-├── Menu_based_Project/
-├── Python-tasks/
-├── Streamlit_Commands/
-├── Twilio-tasks/
-├── backup_project/
-├── jenkins/
-├── kubernetes project/
-├── machine_learning/
-├── react_js/ myapp/
+├── 🤖 AI & Generative AI
+│   ├── AI_AGENT_Streamlit_Project/
+│   ├── Agentic_Ai/
+│   └── GenAI/
+│
+├── ☁️ Cloud & DevOps
+│   ├── Cloud_Computing/
+│   ├── Devops_Projects/
+│   ├── Infra_as_code_proj_terraform/
+│   ├── jenkins/
+│   └── kubernetes_project/
+│
+├── 📊 Machine Learning & Computer Vision
+│   ├── machine_learning/
+│   └── Computer_vision_project/
+│
+├── 🌐 Full Stack & Web Development
+│   ├── Fullstack/
+│   ├── react_js_myapp/
+│   ├── front.html
+│   └── page_source.html
+│
+├── 🐍 Python Automation & Scripting
+│   ├── Python-tasks/
+│   ├── Menu_based_Project/
+│   ├── Streamlit_Commands/
+│   ├── Twilio-tasks/
+│   └── mytelegrambot.txt
+│
+├── 📁 Final & Backup Work
+│   ├── Final_Project_Work/
+│   └── backup_project/
+│
 ├── .gitignore
-├── README.md
-├── front.html
-├── mytelegrambot.txt
-├── page_source.html
+└── README.md
+
+---
+##🚀 About This Repository
+
+This repository contains all technical tasks, experiments, and production-level implementations completed during my internship at LinuxWorld Informatics Pvt. Ltd.
+
+It demonstrates hands-on experience across:
+
+🤖 Generative AI & Agentic AI Systems
+
+☁️ Cloud Computing & Infrastructure as Code (Terraform, AWS)
+
+🔁 CI/CD & DevOps (Jenkins, Kubernetes)
+
+📊 Machine Learning & Computer Vision
+
+🌐 Full Stack Web Development
+
+🐍 Python Automation & API Integrations
+
+Each folder represents practical implementation work rather than theory-based examples.
 
 ---
 
