@@ -40,7 +40,9 @@ This internship focused on building real-world automation systems and solving pr
 
 ---
 
-# 📂 Repository Structure
+## 📂 Repository Structure
+
+```bash
 linuxworld-internship-projects/
 │
 ├── 🤖 AI & Generative AI
@@ -78,9 +80,11 @@ linuxworld-internship-projects/
 │
 ├── .gitignore
 └── README.md
+```
 
 ---
-##🚀 About This Repository
+
+#🚀 About This Repository
 
 This repository contains all technical tasks, experiments, and production-level implementations completed during my internship at LinuxWorld Informatics Pvt. Ltd.
 
