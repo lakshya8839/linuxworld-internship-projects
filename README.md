@@ -41,30 +41,31 @@ This internship focused on building real-world automation systems and solving pr
 ---
 
 # 📂 Repository Structure
-internship-tasks/
+in linuxworld-internship-projects/
 │
+├── AI_AGENT_Streamlit_Project/
+├── Agentic Ai/
+├── Cloud Computing/
+├── Computer vision project/
 ├── Devops_Projects/
 ├── FInal Project Work/
 ├── Fullstack/
 ├── GenAI/
+├── Infra_as_code_proj_terraform/
 ├── Menu_based_Project/
+├── Python-tasks/
+├── Streamlit_Commands/
+├── Twilio-tasks/
+├── backup_project/
 ├── jenkins/
+├── kubernetes project/
 ├── machine_learning/
-│
-├── insta.py
-├── insta_multi_image.py
-├── send_email.py
-├── sms.py
-├── text_to_voice_call.py
-├── tweet_read_comment.py
-├── web_scrapping.py
-├── linux_docker_project.py
-├── streamlit_linux_docker_interface.py
+├── react_js/ myapp/
+├── .gitignore
+├── README.md
 ├── front.html
+├── mytelegrambot.txt
 ├── page_source.html
-│
-└── README.md
-
 
 ---
 
