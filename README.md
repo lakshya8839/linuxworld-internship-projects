@@ -1,4 +1,4 @@
-# 🚀 Internship Portfolio  
+# 🚀 Internship Projects And Minor Tasks 
 ## Linuxworld Informatics Pvt Ltd  
 ### Lakshya Chalana
 
